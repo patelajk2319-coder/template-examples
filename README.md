@@ -1,8 +1,6 @@
 # template-examples
 
-Example Coder workspace templates. Each template lives in its own directory
-with its own README (e.g. [`openshift-gpu-mig`](openshift-gpu-mig)) and is
-pushed independently.
+Example Coder workspace templates. Each template lives in its own directory (e.g. [`openshift-gpu-mig`](openshift-gpu-mig)) and is pushed independently.
 
 ## Pushing a template to a Coder instance
 
