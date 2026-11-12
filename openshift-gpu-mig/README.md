@@ -64,16 +64,9 @@ it a filesystem mirror instead:
 Profile names depend on the GPU model (A100 40GB: `1g.5gb`, `2g.10gb`,
 `3g.20gb`; A100/H100 80GB: `1g.10gb`, `2g.20gb`, `3g.40gb`).
 
-## Workspace parameters (chosen by Coder users)
+## Pushing the template (admin)
 
-| Parameter | Options | Mutable |
-|---|---|---|
-| `gpu` | No GPU / a MIG slice from `gpu_profiles` / Full GPU (if `allow_full_gpu`) | Yes — change on restart |
-| `cpu` | 2 / 4 / 8 cores | Yes |
-| `memory` | 8 / 16 / 32 GB | Yes |
-| `disk_size` | 10–500 GB, default 50 | No — fixed at create |
-
-Push (a variables file keeps values explicit across versions):
+A variables file keeps the values above explicit across versions:
 
 ```bash
 cat > openshift-gpu-mig/vars.yaml <<'V'
@@ -95,6 +88,15 @@ Or directly with the Coder CLI from inside this directory:
 ```bash
 coder templates push openshift-gpu-mig -d . --variables-file vars.yaml
 ```
+
+## Workspace parameters (chosen by Coder users)
+
+| Parameter | Options | Mutable |
+|---|---|---|
+| `gpu` | No GPU / a MIG slice from `gpu_profiles` / Full GPU (if `allow_full_gpu`) | Yes — change on restart |
+| `cpu` | 2 / 4 / 8 cores | Yes |
+| `memory` | 8 / 16 / 32 GB | Yes |
+| `disk_size` | 10–500 GB, default 50 | No — fixed at create |
 
 ## Workspace images (restricted-v2)
 
