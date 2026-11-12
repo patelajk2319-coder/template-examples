@@ -47,7 +47,7 @@ it a filesystem mirror instead:
 4. Re-run `terraform init` / `coder templates push` — providers now resolve
    from the mirror. Re-mirror whenever `required_providers` versions change.
 
-## Template variables
+## Template variables (set by admins, at push time)
 
 | Variable | Default | Set to |
 |---|---|---|
@@ -63,6 +63,15 @@ it a filesystem mirror instead:
 
 Profile names depend on the GPU model (A100 40GB: `1g.5gb`, `2g.10gb`,
 `3g.20gb`; A100/H100 80GB: `1g.10gb`, `2g.20gb`, `3g.40gb`).
+
+## Workspace parameters (chosen by Coder users)
+
+| Parameter | Options | Mutable |
+|---|---|---|
+| `gpu` | No GPU / a MIG slice from `gpu_profiles` / Full GPU (if `allow_full_gpu`) | Yes — change on restart |
+| `cpu` | 2 / 4 / 8 cores | Yes |
+| `memory` | 8 / 16 / 32 GB | Yes |
+| `disk_size` | 10–500 GB, default 50 | No — fixed at create |
 
 Push (a variables file keeps values explicit across versions):
 
