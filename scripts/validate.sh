@@ -26,4 +26,11 @@ for d in "${dirs[@]}"; do
   terraform -chdir="${d}" fmt -check -diff
   terraform -chdir="${d}" validate
   rm -rf "${d}/.terraform" "${d}/.terraform.lock.hcl"
+
+  shopt -s nullglob
+  template_scripts=("${d}"/*.sh)
+  shopt -u nullglob
+  if [[ ${#template_scripts[@]} -gt 0 ]]; then
+    shellcheck "${template_scripts[@]}"
+  fi
 done
