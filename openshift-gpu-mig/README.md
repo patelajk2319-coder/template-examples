@@ -7,8 +7,7 @@ on restart. Stopping a workspace deletes the pod, freeing the slice;
 
 ## Prerequisites (cluster admin)
 
-1. Node Feature Discovery + NVIDIA GPU Operator installed (from your mirrored
-   OperatorHub catalog if disconnected), with a `ClusterPolicy`.
+1. Node Feature Discovery + NVIDIA GPU Operator installed with a `ClusterPolicy`.
 2. MIG configured on GPU nodes: `spec.mig.strategy` set (`mixed` or `single`),
    nodes labelled with a profile, e.g.
    `oc label node <node> nvidia.com/mig.config=all-1g.10gb --overwrite`.
