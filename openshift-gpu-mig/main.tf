@@ -33,6 +33,8 @@ variable "gpu_image" {
   default     = "image-registry.openshift-image-registry.svc:5000/coder-workspaces/ubi9-cuda-workspace:latest"
 }
 
+# single = uniform (every slice on a GPU is the same profile)
+# mixed  = heterogeneous (different slice sizes on the same GPU)
 variable "mig_strategy" {
   type        = string
   description = "NVIDIA GPU Operator ClusterPolicy spec.mig.strategy: mixed or single."

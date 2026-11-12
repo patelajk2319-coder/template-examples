@@ -65,9 +65,7 @@ it a filesystem mirror instead:
 Profile names depend on the GPU model (A100 40GB: `1g.5gb`, `2g.10gb`,
 `3g.20gb`; A100/H100 80GB: `1g.10gb`, `2g.20gb`, `3g.40gb`).
 
-Push (a variables file keeps values explicit across versions). Via the
-repo-root Taskfile — see the top-level README — once `.env` has
-`CODER_URL`/`CODER_SESSION_TOKEN`:
+Push (a variables file keeps values explicit across versions):
 
 ```bash
 cat > openshift-gpu-mig/vars.yaml <<'V'
@@ -75,17 +73,18 @@ namespace: coder-workspaces
 mig_strategy: mixed
 gpu_profiles: 1g.10gb,3g.40gb
 V
+```
+
+Via the repo-root Taskfile (see top-level README; needs `.env` with
+`CODER_URL`/`CODER_SESSION_TOKEN`):
+
+```bash
 task push TEMPLATE=openshift-gpu-mig VARS_FILE=openshift-gpu-mig/vars.yaml
 ```
 
 Or directly with the Coder CLI from inside this directory:
 
 ```bash
-cat > vars.yaml <<'V'
-namespace: coder-workspaces
-mig_strategy: mixed
-gpu_profiles: 1g.10gb,3g.40gb
-V
 coder templates push openshift-gpu-mig -d . --variables-file vars.yaml
 ```
 
