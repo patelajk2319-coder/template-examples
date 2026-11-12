@@ -51,15 +51,15 @@ it a filesystem mirror instead:
 
 | Variable | Default | Set to |
 |---|---|---|
-| `namespace` | `coder-workspaces` | Your workspace Project |
-| `image` | internal registry `ubi9-base-workspace` | Your CPU workspace image |
-| `gpu_image` | internal registry `ubi9-cuda-workspace` | Your CUDA workspace image |
-| `mig_strategy` | `mixed` | Your ClusterPolicy `spec.mig.strategy` |
-| `gpu_profiles` | `1g.10gb,2g.20gb,3g.40gb` | Comma-separated profiles your nodes expose |
-| `allow_full_gpu` | `false` | `true` to offer whole GPUs (non-MIG nodes) |
-| `gpu_product` | `""` | `single` only, e.g. `NVIDIA-A100-SXM4-80GB` |
-| `gpu_taint_key` | `nvidia.com/gpu` | Your GPU node taint key |
-| `cpu_node_selector` | `{}` | Map of node labels for your CPU workspace pool |
+| `namespace` | `coder-workspaces` | The OpenShift Project workspace pods run in |
+| `image` | internal registry `ubi9-base-workspace` | Your CPU-only pod image, from your registry |
+| `gpu_image` | internal registry `ubi9-cuda-workspace` | Your CUDA pod image, from your registry |
+| `mig_strategy` | `mixed` | Your ClusterPolicy's `spec.mig.strategy` |
+| `gpu_profiles` | `1g.10gb,2g.20gb,3g.40gb` | The MIG profiles your GPU nodes expose |
+| `allow_full_gpu` | `false` | `true` to also offer a whole (non-MIG) GPU |
+| `gpu_product` | `""` | `single` strategy only — your nodes' `nvidia.com/gpu.product` value, e.g. `NVIDIA-A100-SXM4-80GB` |
+| `gpu_taint_key` | `nvidia.com/gpu` | The taint key on your GPU nodes |
+| `cpu_node_selector` | `{}` | Node labels for your CPU-only node pool |
 
 Profile names depend on the GPU model (A100 40GB: `1g.5gb`, `2g.10gb`,
 `3g.20gb`; A100/H100 80GB: `1g.10gb`, `2g.20gb`, `3g.40gb`).
