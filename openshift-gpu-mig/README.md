@@ -115,6 +115,9 @@ user-space CUDA libraries at a version the node driver supports:
 # Mirror this base into your registry first; pick a CUDA version your driver supports.
 FROM nvcr.io/nvidia/cuda:12.4.1-runtime-ubi9
 RUN dnf install -y --nodocs git python3.11 python3.11-pip procps-ng && dnf clean all
+# Point pip at your internal index (PIP_INDEX_URL, or a baked-in pip.conf)
+# for air-gapped builds. Match the torch build to the CUDA version above.
+RUN pip3.11 install --no-cache-dir jupyterlab torch
 RUN useradd --uid 1001 --create-home --shell /bin/bash coder \
  && chgrp -R 0 /home/coder && chmod -R g=u /home/coder && chmod g=u /etc/passwd
 COPY uid_entrypoint.sh /usr/local/bin/uid_entrypoint
@@ -126,9 +129,11 @@ WORKDIR /home/coder
 A working `uid_entrypoint.sh` is included in this directory — no external
 dependency to fetch at build time.
 
-Pre-install what users need (Python, PyTorch, Jupyter, IDE servers) — no root
-on `restricted-v2`, and disconnected clusters can't fetch packages at
-start-up unless pip/conda point at an internal mirror.
+Pip-install whatever users need the same way (Python packages above are
+just an example) — there's no root on `restricted-v2`, so nothing can be
+installed once the workspace is running. A browser IDE (code-server,
+JupyterLab's own UI) is a Coder app, not a package — see the registry
+modules note below.
 
 ## Controlling GPU use
 
