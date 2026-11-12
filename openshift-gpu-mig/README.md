@@ -11,6 +11,13 @@ on restart. Stopping a workspace deletes the pod, freeing the slice;
 
 ## Prerequisites (cluster admin)
 
+> This template assumes the items below are already in place. Deciding how
+> to size, partition, or share GPU capacity across Coder and any other tools
+> on the cluster is a cluster-architecture question for Red Hat (OpenShift,
+> GPU Operator) and NVIDIA (MIG) — out of scope here. This repo only covers
+> the Coder side: how to wire a workspace template up to whatever GPU setup
+> you land on.
+
 1. Node Feature Discovery + NVIDIA GPU Operator installed (from your mirrored
    OperatorHub catalog if disconnected), with a `ClusterPolicy`.
 2. MIG configured on GPU nodes: `spec.mig.strategy` set (`mixed` or `single`),
