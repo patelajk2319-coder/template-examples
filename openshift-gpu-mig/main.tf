@@ -184,6 +184,10 @@ data "coder_workspace_preset" "gpu_small" {
 }
 
 # ── Derived GPU settings ────────────────────────────────────────────────────
+# gpu_resource/gpu_node_selector must match what the node actually advertises
+# (oc describe node <gpu-node> | grep nvidia.com/mig) exactly — Kubernetes
+# does exact string matching, so a mismatch just leaves the pod Pending,
+# with no error pointing at this.
 locals {
   gpu_profiles = compact([for p in split(",", var.gpu_profiles) : trimspace(p)])
   gpu_choice   = data.coder_parameter.gpu.value
