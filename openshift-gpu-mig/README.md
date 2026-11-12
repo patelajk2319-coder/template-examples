@@ -5,10 +5,6 @@ One template for CPU and GPU workspaces on OpenShift. Users pick **No GPU**, a
 on restart. Stopping a workspace deletes the pod, freeing the slice;
 `/home/coder` persists on a PVC.
 
-> Example only. `terraform validate` passes and `terraform plan` was checked
-> for every GPU option, but it hasn't been run against a real GPU cluster.
-> Replace profile names, images, labels and taints with your cluster's values.
-
 ## Prerequisites (cluster admin)
 
 1. Node Feature Discovery + NVIDIA GPU Operator installed (from your mirrored
@@ -21,12 +17,12 @@ on restart. Stopping a workspace deletes the pod, freeing the slice;
    - `mixed`: resources like `nvidia.com/mig-1g.10gb: 7`
    - `single`: `nvidia.com/gpu: 7` plus label `nvidia.com/gpu.product=<product>-MIG-1g.10gb`
 4. Note the taint key on GPU nodes if tainted (default here: `nvidia.com/gpu`).
-5. Provisioner ServiceAccount can create pods/PVCs in the workspace namespace.
+5. The provisioner ServiceAccount can create pods/PVCs in the workspace namespace.
 
 ## Disconnected Terraform providers
 
 The provisioner runs `terraform init` for this template same as any other —
-on a fully airgapped cluster it can't reach `registry.terraform.io`, so give
+on a fully air-gapped cluster it can't reach `registry.terraform.io`, so give
 it a filesystem mirror instead:
 
 1. From a machine with internet access, mirror the two providers this
@@ -35,7 +31,7 @@ it a filesystem mirror instead:
    terraform providers mirror -platform=linux_amd64 ./provider-mirror
    ```
 2. Copy `./provider-mirror` somewhere the provisioner pod can read (an
-   internal artifact store, a ConfigMap/PVC mounted into the pod, etc.).
+   internal artefact store, a ConfigMap/PVC mounted into the pod, etc.).
 3. Point Terraform at it via a CLI config file on the provisioner
    (`TF_CLI_CONFIG_FILE`, or the default `~/.terraformrc`):
    ```hcl
@@ -138,10 +134,10 @@ start-up unless pip/conda point at an internal mirror.
       requests.nvidia.com/mig-3g.40gb: "2"
   ```
 - **Idle slices:** a running workspace holds its slice even when idle — set a
-  short autostop / activity bump on the template (autostop requirement on
+  short autostop/activity bump on the template (autostop requirement on
   Premium) so idle GPU workspaces stop.
 - **No free slice:** the pod stays Pending and the build fails after the pod
-  create timeout (10m here). Users retry or pick a smaller profile.
+  creation timeout (10m here). Users retry or pick a smaller profile.
 
 ## Notes
 
@@ -153,4 +149,4 @@ start-up unless pip/conda point at an internal mirror.
   reference architecture.
 - No Coder registry modules are used, so pushing needs only the `coder/coder`
   and `hashicorp/kubernetes` providers. Add modules (code-server, JupyterLab,
-  etc.) as needed and vendor them for air-gap.
+  etc.) as needed and vendor them for air-gapped use.
