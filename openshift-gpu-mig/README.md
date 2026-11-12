@@ -124,7 +124,7 @@ WORKDIR /home/coder
 ```
 
 A working `uid_entrypoint.sh` is included in this directory — no external
-dependency to fetch at build time, which matters on an air-gapped cluster.
+dependency to fetch at build time.
 
 Pre-install what users need (Python, PyTorch, Jupyter, IDE servers) — no root
 on `restricted-v2`, and disconnected clusters can't fetch packages at
