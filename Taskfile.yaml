@@ -23,26 +23,10 @@ tasks:
       - sh: '[ -d "{{.TEMPLATE}}" ]'
         msg: 'No such template directory: {{.TEMPLATE}}'
     cmds:
-      - coder templates push {{.TEMPLATE}} -d ./{{.TEMPLATE}} {{if .VARS_FILE}}--variables-file {{.VARS_FILE}}{{end}} --yes
+      - bash scripts/push.sh {{.TEMPLATE}} {{.VARS_FILE}}
 
   validate:
-    desc: 'terraform fmt/validate for every template directory, or just TEMPLATE=<dir>'
+    desc: 'terraform fmt/validate for every template directory (or just TEMPLATE=<dir>), plus shellcheck on scripts'
     cmds:
-      - |
-        set -euo pipefail
-        if [ -n "{{.TEMPLATE}}" ]; then
-          if [ ! -d "{{.TEMPLATE}}" ]; then
-            echo "No such template directory: {{.TEMPLATE}}" >&2
-            exit 1
-          fi
-          dirs="{{.TEMPLATE}}"
-        else
-          dirs=$(find . -maxdepth 1 -mindepth 1 -type d ! -name '.*' -exec basename {} \;)
-        fi
-        for d in $dirs; do
-          echo "[validate] $d"
-          terraform -chdir="$d" init -backend=false -input=false >/dev/null
-          terraform -chdir="$d" fmt -check -diff
-          terraform -chdir="$d" validate
-          rm -rf "$d/.terraform" "$d/.terraform.lock.hcl"
-        done
+      - bash scripts/validate.sh {{.TEMPLATE}}
+      - shellcheck scripts/*.sh

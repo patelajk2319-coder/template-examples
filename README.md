@@ -7,13 +7,15 @@ pushed independently.
 ## Pushing a template to a Coder instance
 
 ```bash
-brew install go-task coder
+brew install go-task coder shellcheck
 cp .env.example .env   # fill in CODER_URL / CODER_SESSION_TOKEN
 task up TEMPLATE=openshift-gpu-mig   # validate, then push
 ```
+
+Tasks are thin wrappers around `scripts/*.sh`.
 
 | Task | Description |
 |---|---|
 | `task up TEMPLATE=<dir>` | Validate, then push |
 | `task push TEMPLATE=<dir> [VARS_FILE=path]` | Push/update one template |
-| `task validate [TEMPLATE=<dir>]` | `terraform fmt`/`validate` — all templates, or just one |
+| `task validate [TEMPLATE=<dir>]` | `terraform fmt`/`validate` for all templates (or just one), plus `shellcheck` on `scripts/` |
