@@ -11,7 +11,10 @@ on restart. Stopping a workspace deletes the pod, freeing the slice;
 2. MIG configured on GPU nodes: `spec.mig.strategy` set (`mixed` or `single`),
    nodes labelled with a profile, e.g.
    `oc label node <node> nvidia.com/mig.config=all-1g.10gb --overwrite`.
-3. Confirm what each node advertises — the template must request exactly this:
+3. Check what each node actually advertises, and make sure `gpu_profiles` /
+   `mig_strategy` / `gpu_product` are set to match exactly. Kubernetes does
+   exact string matching on the resource name — no match means no error,
+   just a workspace pod stuck `Pending` forever.
    `oc describe node <gpu-node> | grep -E 'nvidia.com/(gpu|mig)'`
    - `mixed`: resources like `nvidia.com/mig-1g.10gb: 7`
    - `single`: `nvidia.com/gpu: 7` plus label `nvidia.com/gpu.product=<product>-MIG-1g.10gb`
