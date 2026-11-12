@@ -11,8 +11,9 @@ on restart. Stopping a workspace deletes the pod, freeing the slice;
 2. MIG configured on GPU nodes: `spec.mig.strategy` set (`mixed` or `single`),
    nodes labelled with a profile, e.g.
    `oc label node <node> nvidia.com/mig.config=all-1g.10gb --overwrite`.
-3. Check what each node actually advertises, and make sure `gpu_profiles` /
-   `mig_strategy` / `gpu_product` are set to match exactly. Kubernetes does
+3. Check what each node actually advertises, and make sure the Terraform
+   variables `gpu_profiles`, `mig_strategy`, and `gpu_product` (see
+   Terraform variables below) are set to match exactly. Kubernetes does
    exact string matching on the resource name — no match means no error,
    just a workspace pod stuck `Pending` forever.
    `oc describe node <gpu-node> | grep -E 'nvidia.com/(gpu|mig)'`
@@ -50,7 +51,7 @@ it a filesystem mirror instead:
 4. Re-run `terraform init` / `coder templates push` — providers now resolve
    from the mirror. Re-mirror whenever `required_providers` versions change.
 
-## Template variables (set by admins, at push time)
+## Terraform variables (set by admins, at push time)
 
 | Variable | Default | Set to |
 |---|---|---|
@@ -96,7 +97,7 @@ coder templates push openshift-gpu-mig -d . --variables-file vars.yaml
 
 | Parameter | Options | Mutable |
 |---|---|---|
-| `gpu` | No GPU / a MIG slice from `gpu_profiles` / Full GPU (if `allow_full_gpu`) | Yes — change on restart |
+| `gpu` | No GPU / a MIG slice from the `gpu_profiles` Terraform variable / Full GPU (if the `allow_full_gpu` Terraform variable is `true`) | Yes — change on restart |
 | `cpu` | 2 / 4 / 8 cores | Yes |
 | `memory` | 8 / 16 / 32 GB | Yes |
 | `disk_size` | 10–500 GB, default 50 | No — fixed at create |
